@@ -1,0 +1,8 @@
+/target/
+/.settings/
+/log/
+/.classpath
+/.project
+/.gitlab-ci.yml 
+.idea/
+*.iml
