@@ -1,5 +1,6 @@
 from datetime import datetime
 import csv
+import pandas as pd
 
 from dal import insert
 from db import Database
@@ -15,7 +16,7 @@ def extract(filepath):
             for row in reader:
                 # remove commas between double-quotes, replace double-quotes with nothing
                 cleaned_row = [field.replace(',', '').replace('"', '') for field in row]
-                data.append(tuple(cleaned_row[1:29]))
+                data.append(tuple(cleaned_row[0:29]))
         return data
     except Exception as e:
         print(e)
@@ -25,7 +26,7 @@ def transform(data):
     transformed_data = []
 
     for row in data:
-        release_date = row[2]
+        release_date = row[3]
 
         date_formats = ["%m/%d/%Y", "%M/%d/%Y", "%m/%d/%y"]
         year = None
@@ -37,13 +38,13 @@ def transform(data):
             except ValueError:
                 continue
 
-        tiktok_likes = int(row[4]) if row[4] else 0
+        tiktok_likes = int(row[14]) if row[14] else 0
 
         track = row[0]
-        artist = row[1]
-        track_score = row[3]
+        artist = row[2]
+        track_score = row[6]
 
-        transformed_data.append((year, tiktok_likes, track, artist, track_score))
+        transformed_data.append((track, artist, year, track_score, tiktok_likes))
 
     return transformed_data
 
@@ -51,8 +52,10 @@ def transform(data):
 def load(transformed_data):
     # Insert transformed_data into the database
     insert(transformed_data)
-    #db = Database("db_spotify")
-    #db.write(transformed_data, 'spotify')
+    # Convert the data to a pandas DataFrame
+    # df = pd.DataFrame(transformed_data, columns=['track', 'artist', 'release_date(year)', 'track_score', 'tiktok_likes'])
+    # db = Database("db_spotify")
+    # db.write(df, 'spotify')
 
 
 def etl_process(filepath):

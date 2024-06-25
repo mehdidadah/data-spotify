@@ -15,8 +15,8 @@ def insert(records):
     if cnx:
         try:
             db = cnx.cursor()
-            db.execute("DELETE FROM db_spotify")
-            db.executemany("INSERT INTO db_spotify VALUES(%s, %s, %s, %s, %s)", records)
+            db.execute("DELETE FROM spotify")
+            db.executemany("INSERT INTO spotify VALUES(%s, %s, %s, %s, %s)", records)
             cnx.commit()
         except my.Error as e:
             print(e)
