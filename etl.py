@@ -51,11 +51,11 @@ def transform(data):
 
 def load(transformed_data):
     # Insert transformed_data into the database
-    insert(transformed_data)
+    # insert(transformed_data)
     # Convert the data to a pandas DataFrame
-    # df = pd.DataFrame(transformed_data, columns=['track', 'artist', 'release_date(year)', 'track_score', 'tiktok_likes'])
-    # db = Database("db_spotify")
-    # db.write(df, 'spotify')
+    df = pd.DataFrame(transformed_data, columns=['track', 'artist', 'release_date(year)', 'track_score', 'tiktok_likes'])
+    db = Database("db_spotify")
+    db.write(df, 'spotify')
 
 
 def etl_process(filepath):
